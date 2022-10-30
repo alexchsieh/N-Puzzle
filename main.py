@@ -79,22 +79,30 @@ def algo(puzzle):
     algorithm = input(
         "Select algorithm. (1) for Uniform Cost Search, (2) for the Misplaced Tile Heuristic, " "or (3) the Manhattan Distance Heuristic." + '\n')
     if algorithm == "1":
-        uniform_cost_search(puzzle, 0)
+        uniform(puzzle)
     elif algorithm == "2":
-        uniform_cost_search(puzzle, 1)
+        misplaced(puzzle)
     elif algorithm == "2":
-        uniform_cost_search(puzzle, 2)
+        manhattan(puzzle)
 
 
-# def general-search(problem, QUEUEING-FUNCTION):
-#     nodes = MAKE-QUEUE(MAKE-NODE(problem.INITIAL_STATE))
-#     for i in range(0, 3):
-#         print(puzzle[i])
-#     if nodes.empty():
-#         return failure
-#     if problem.GOAL-TEST(node.STATE) == goal:
-#         return node
-#         nodes = QUEUEING-FUNCITON(nodes, EXPAND(node, problem.OPERATORS))
+def generalsearch(problem, quefunc):
+    # make a queue of nodes
+    nodes = [TreeNode(problem.init)]
+    while nodes:
+        # if queue is empty return fail
+        if nodes == 0:
+            return "failure"
+        # else queue pop the front
+        node = nodes.pop(0)
+        # if node is at goal state return it
+        if goal(nodes):
+            return node
+        # else run the search on the algo again
+        nodes = quefunc(nodes, expand(node, problem.OPERATORS))
+
+
+def expand(node, ops)
 
 
 main()
