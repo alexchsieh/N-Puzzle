@@ -3,11 +3,13 @@ import copy
 
 class TreeNode:
 
-    def __init__(self, puzzle, depth):
+    def __init__(self, puzzle):
+        # changed depth to not be a parameter
         self.puzzle = puzzle
-        self.depth = depth
+        self.depth = 0
         self.h = 0
         self.children = []
+        self.expanded = False
 
     def moveUp(self):
         x = 0
@@ -22,14 +24,14 @@ class TreeNode:
 
         # check edge cases
         if x == 0:
-            return
+            return None
 
         #deepcopy and swap
-        newpuzzle = copy.deepcopy(self)
-        temp = newpuzzle.puzzle[x-1][y]
-        newpuzzle.puzzle[x-1][y] = newpuzzle.puzzle[x][y]
-        newpuzzle.puzzle[x][y] = temp
-        return newpuzzle
+        up = copy.deepcopy(self.puzzle)
+        temp = up[x-1][y]
+        up[x-1][y] = up[x][y]
+        up[x][y] = temp
+        return up
 
     def moveLeft(self):
         x = 0
@@ -44,14 +46,14 @@ class TreeNode:
 
         # check edge cases
         if y == 0:
-            return
+            return None
 
         #deepcopy and swap
-        newpuzzle = copy.deepcopy(self)
-        temp = newpuzzle.puzzle[x][y-1]
-        newpuzzle.puzzle[x][y-1] = newpuzzle.puzzle[x][y]
-        newpuzzle.puzzle[x][y] = temp
-        return newpuzzle
+        left = copy.deepcopy(self.puzzle)
+        temp = left[x][y-1]
+        left[x][y-1] = left[x][y]
+        left[x][y] = temp
+        return left
 
     def moveDown(self):
         x = 0
@@ -66,14 +68,14 @@ class TreeNode:
 
         # check edge cases
         if x == 2:
-            return
+            return None
 
         #deepcopy and swap
-        newpuzzle = copy.deepcopy(self)
-        temp = newpuzzle.puzzle[x-1][y]
-        newpuzzle.puzzle[x-1][y] = newpuzzle.puzzle[x][y]
-        newpuzzle.puzzle[x][y] = temp
-        return newpuzzle
+        down = copy.deepcopy(self.puzzle)
+        temp = down[x+1][y]
+        down[x+1][y] = down[x][y]
+        down[x][y] = temp
+        return down
 
     def moveRight(self):
         x = 0
@@ -88,11 +90,11 @@ class TreeNode:
 
         # check edge cases
         if y == 2:
-            return
+            return None
 
         #deepcopy and swap
-        newpuzzle = copy.deepcopy(self)
-        temp = newpuzzle.puzzle[x][y+1]
-        newpuzzle.puzzle[x][y+1] = newpuzzle.puzzle[x][y]
-        newpuzzle.puzzle[x][y] = temp
-        return newpuzzle
+        right = copy.deepcopy(self.puzzle)
+        temp = right[x][y+1]
+        right[x][y+1] = right[x][y]
+        right[x][y] = temp
+        return right
