@@ -111,6 +111,13 @@ def generalsearch(problem, quefunc):
     used_nodes.append(n.puzzle)
 
     while nodes:
+        if quefunc != 1:
+            # ASKED CLASSMATES & YOUTUBE FOR HELP
+            # LAMBDA ALLOWS YOU TO PASS IN MULTIPLE ARGUMENTS FOR X TO SORT
+            # IN THIS CASE IT WILL SORT BY SMALLEST DEPTH + H VALUE
+            # IT WILL FALL BACK TO DEPTH ALONE IF IT TIES
+            nodes = sorted(nodes, key=lambda x: (x.depth + x.h, x.depth))
+
         # if queue is empty return fail
         if not nodes:
             return False
@@ -129,6 +136,7 @@ def generalsearch(problem, quefunc):
 
         # if node is at goal state return it
         print_puzzle(node.puzzle)
+        print("Depth of solution: " + str(node.depth))
         if goal(node.puzzle):
             print("Depth of solution: " + str(node.depth))
             print("Number of nodes expanded: " + str(numNodes))
@@ -154,13 +162,31 @@ def generalsearch(problem, quefunc):
                     x.depth = node.depth + 1
                     x.h = misplaced(x.puzzle)
                 elif quefunc == 3:
-                    x.depth = nd.depth + 1
+                    x.depth = node.depth + 1
                     x.h = manhattan(x.puzzle)
 
                 # adds the child to the queue in order of L R U D
                 nodes.append(x)
                 # adds the puzzle to a list of seen puzzles so you dont repeat
                 used_nodes.append(x.puzzle)
+
+
+def misplaced(puzzle):
+    ans = [[1, 2, 3],
+           [4, 5, 6],
+           [7, 8, 0]]
+    count = 0
+
+    # iterate the entire puzzle
+    for i in range(len(puzzle)):
+        for j in range(len(puzzle)):
+            # check if your index is in the right place
+            if int(puzzle[i][j]) != ans[i][j]:
+                # check if your index is not the blank space
+                if int(puzzle[i][j]) != 0:
+                    # increment heuristic value by 1
+                    count += 1
+    return count
 
 
 def expand(node, used_nodes):
