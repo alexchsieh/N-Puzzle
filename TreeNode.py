@@ -5,6 +5,7 @@ class TreeNode:
 
     def __init__(self, puzzle):
         # changed depth to not be a parameter
+        # default node data
         self.puzzle = puzzle
         self.depth = 0
         self.h = 0

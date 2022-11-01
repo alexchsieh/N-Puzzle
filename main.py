@@ -86,12 +86,13 @@ def generalsearch(problem, quefunc):
     # count of nodes
     numNodes = -1
     # max queue size
-    mqz = -1
+    mqz = 0
     # to avoid duplicate nodes
     used_nodes = []
-    # put the first node into the queue
 
+    # based on heuristic, get the h value
     if quefunc == 1:
+        # uniform is naturally 0
         h = 0
     elif quefunc == 2:
         h = misplaced(problem)
@@ -102,7 +103,10 @@ def generalsearch(problem, quefunc):
     n = TreeNode.TreeNode(problem)
     n.h = h
     n.depth = 0
+
+    # putting initial puzzle into queue
     nodes.append(n)
+
     # adding the puzzle to the seen list
     used_nodes.append(n.puzzle)
 
@@ -110,49 +114,67 @@ def generalsearch(problem, quefunc):
         # if queue is empty return fail
         if not nodes:
             return False
-        # else queue pop the front
-        node = nodes.pop(0)
+
         # update max queue size with larger between itself and length of curr queue
         mqz = max(len(nodes), mqz)
+
+        # keeps popping the front node to run algorithm
+        node = nodes.pop(0)
+
         # expand by 1
         if node.expanded is False:
             # this helps you not double count nodes
             numNodes += 1
             node.expanded = True
+
         # if node is at goal state return it
         print_puzzle(node.puzzle)
         if goal(node.puzzle):
             print("Depth of solution: " + str(node.depth))
             print("Number of nodes expanded: " + str(numNodes))
+            # edge case, if it's the correct puzzle from the start, need to remove the initial queue size
+            if mqz == 1:
+                mqz -= 1
             print("Max queue size: " + str(mqz))
             return node
-        # else run the search on the algo again
-        # make sure it hasn't been seen before
-        # adding this to duplicated node list
+
+        # gives you all the possible children for your node
         a = expand(node, used_nodes)
 
+        # iterates through the children
         for x in a.children:
+            # makes sure that the child exists
             if x is not None:
+                # if the heuristic is uniform, just increase depth by 1
                 if quefunc == 1:
                     x.depth = node.depth + 1
                     x.h = 0
+                # if heuristic is other, must compute h cost
                 elif quefunc == 2:
                     x.depth = node.depth + 1
                     x.h = misplaced(x.puzzle)
                 elif quefunc == 3:
                     x.depth = nd.depth + 1
                     x.h = manhattan(x.puzzle)
+
+                # adds the child to the queue in order of L R U D
                 nodes.append(x)
+                # adds the puzzle to a list of seen puzzles so you dont repeat
                 used_nodes.append(x.puzzle)
 
 
 def expand(node, used_nodes):
 
+    # when running the debugger, the functions were being ran 3 times per if statement
+    # just calculated it once up here and can be reused way faster
     l = node.moveLeft()
     r = node.moveRight()
     u = node.moveUp()
     d = node.moveDown()
 
+    # make sure the puzzle movement in direction is possible
+    # checks if the puzzle has not been seen before
+    # if both pass add the newly generated puzzle as a child of the parent node
     if l != None:
         if l not in used_nodes:
             left_node = TreeNode.TreeNode(l)
@@ -177,6 +199,7 @@ def expand(node, used_nodes):
 
 
 def goal(puzzle):
+    # compares puzzle to ideal puzzle and returns
     ans = [[1, 2, 3],
            [4, 5, 6],
            [7, 8, 0]]
