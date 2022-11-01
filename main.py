@@ -189,6 +189,36 @@ def misplaced(puzzle):
     return count
 
 
+def manhattan(puzzle):
+    ans = [[1, 2, 3],
+           [4, 5, 6],
+           [7, 8, 0]]
+    count = 0
+    x = 0
+    y = 0
+    correct_x = 0
+    correct_y = 0
+
+    # iterates 1-8 to search for the number in the puzzle
+    for x in range(1, 9):
+        # iterate the entire puzzle
+        for i in range(len(puzzle)):
+            for j in range(len(puzzle)):
+                # finds the value you're searching for in the scrambled puzzle
+                if int(puzzle[i][j]) == x:
+                    x = i
+                    y = j
+                # finds the value you're searching for in the solved puzzle
+                if int(ans[i][j]) == x:
+                    correct_x = i
+                    correct_y = j
+        # add to count the total distance between the x and ys
+        #
+        count += abs(correct_x-x) + abs(correct_y-y)
+
+    return count
+
+
 def expand(node, used_nodes):
 
     # when running the debugger, the functions were being ran 3 times per if statement
