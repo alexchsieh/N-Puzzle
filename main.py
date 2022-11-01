@@ -136,7 +136,6 @@ def generalsearch(problem, quefunc):
 
         # if node is at goal state return it
         print_puzzle(node.puzzle)
-        print("Depth of solution: " + str(node.depth))
         if goal(node.puzzle):
             print("Depth of solution: " + str(node.depth))
             print("Number of nodes expanded: " + str(numNodes))
@@ -200,16 +199,16 @@ def manhattan(puzzle):
     correct_y = 0
 
     # iterates 1-8 to search for the number in the puzzle
-    for x in range(1, 9):
+    for a in range(1, 9):
         # iterate the entire puzzle
         for i in range(len(puzzle)):
             for j in range(len(puzzle)):
                 # finds the value you're searching for in the scrambled puzzle
-                if int(puzzle[i][j]) == x:
+                if int(puzzle[i][j]) == a:
                     x = i
                     y = j
                 # finds the value you're searching for in the solved puzzle
-                if int(ans[i][j]) == x:
+                if int(ans[i][j]) == a:
                     correct_x = i
                     correct_y = j
         # add to count the total distance between the x and ys
