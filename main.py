@@ -77,11 +77,11 @@ def print_puzzle(puzzle):
 def algo(puzzle):
     algorithm = input(
         "Select algorithm. (1) for Uniform Cost Search, (2) for the Misplaced Tile Heuristic, " "or (3) the Manhattan Distance Heuristic." + '\n')
-    if algorithm == "1":
-        generalsearch(TreeNode.TreeNode(puzzle, 0))
+    # instead of turning it into a node here, keep it as just the board, make node inside search
+    generalsearch(puzzle, int(algorithm))
 
 
-def generalsearch(problem):
+def generalsearch(problem, quefunc):
     # make a queue of nodes
     nodes = []
     # count of nodes
@@ -91,7 +91,23 @@ def generalsearch(problem):
     # to avoid duplicate nodes
     used_nodes = []
     # put the first node into the queue
-    nodes.append(problem)
+
+    if quefunc == 1:
+        h = 0
+    elif quefunc == 2:
+        h = misplaced(problem)
+    elif quefunc == 3:
+        h = manhattan(problem)
+
+    # making the puzzle into a node and giving initial values
+    n = TreeNode.TreeNode(problem)
+    n.h = h
+    n.depth = 0
+    nodes.append(n)
+
+    # adding the puzzle to the seen list
+    used_nodes.append(n.puzzle)
+    # increasing max queue size by 1
 
     while nodes:
         # if queue is empty return fail
@@ -100,10 +116,14 @@ def generalsearch(problem):
         # else queue pop the front
         node = nodes.pop(0)
         # expand by 1
-        numNodes += 1
+        if node.expanded is False:
+            numNodes += 1
+            node.expanded = True
+        mqz -= 1
         # update max queue size with larger between itself and length of curr queue
         mqz = max(len(nodes), mqz)
         # if node is at goal state return it
+        print_puzzle(node.puzzle)
         if goal(node.puzzle):
             print("Depth of solution: " + str(node.depth))
             print("Number of nodes expanded: " + str(numNodes))
@@ -111,30 +131,46 @@ def generalsearch(problem):
             return node
         # else run the search on the algo again
         # make sure it hasn't been seen before
-        if node not in used_nodes:
-            # nodes = quefunc(nodes, expand(node))
-            # adding this to duplicated node list
-            used_nodes.append(copy.deepcopy(node))
+        # adding this to duplicated node list
+        expand(node)
+
+        for x in node.children:
+            if quefunc == 1:
+                x.depth = node.depth + 1
+                x.h = 0
+            elif quefunc == 2:
+                x.depth = node.depth + 1
+                x.h = misplaced(x.puzzle)
+            elif quefunc == 3:
+                x.depth = nd.depth + 1
+                x.h = manhattan(x.puzzle)
+
+            nodes.append(x)
+            used_nodes.append(x.puzzle)
 
 
 def expand(node):
     nodes = []
 
-    up_node = node.moveUp()
-    nodes.append(up_node)
-    node.children.append(up_node)
+    if node.moveUp() != 0:
+        up_node = TreeNode.TreeNode(node.moveUp())
+        nodes.append(up_node)
+        node.children.append(up_node)
 
-    down_node = node.moveDown()
-    nodes.append(down_node)
-    node.children.append(down_node)
+    if node.moveDown() != 0:
+        down_node = TreeNode.TreeNode(node.moveDown())
+        nodes.append(down_node)
+        node.children.append(down_node)
 
-    left_node = node.moveLeft()
-    nodes.append(left_node)
-    node.children.append(left_node)
+    if node.moveLeft() != 0:
+        left_node = TreeNode.TreeNode(node.moveLeft())
+        nodes.append(left_node)
+        node.children.append(left_node)
 
-    right_node = node.moveRight()
-    nodes.append(right_node)
-    node.children.append(right_node)
+    if node.moveRight() != 0:
+        right_node = TreeNode.TreeNode(node.moveRight())
+        nodes.append(right_node)
+        node.children.append(right_node)
 
     return nodes
 
