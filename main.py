@@ -213,7 +213,7 @@ def manhattan(puzzle):
                     correct_x = i
                     correct_y = j
         # add to count the total distance between the x and ys
-        #
+        # to visualize: it's the long way around for the hypotenuse
         count += abs(correct_x-x) + abs(correct_y-y)
 
     return count
