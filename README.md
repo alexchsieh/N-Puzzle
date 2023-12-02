@@ -1,1 +1,1 @@
-# cs170-project1
+# N-Puzzle
