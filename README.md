@@ -11,21 +11,6 @@ clone the repo
 https://github.com/alexchsieh/N-Puzzle.git
 ```
 
-## Tools
-
-install pip for pandas
-
-```sh
-sudo apt install python3-pip
-```
-
-install pandas
-
-```sh
-pip install pandas
-```
-
-
 ## Usage example
 
 run the program
@@ -34,23 +19,16 @@ run the program
 python3 main.py
 ```
 
-use a testing data set
-
-```
-./tests/Small_Data.txt
-```
-
-sample forward selection solution
+sample impossible difficulty solution
 
 ```sh
-Finished search! The best feature subset is [6, 1], which has an accuracy of 95.0%
+Depth of solution: 31
+Number of nodes expanded: 21197
+Max queue size: 8862
 ```
 
-sample backward elimination solution
-
-```sh
-Finished search! The best feature subset to remove is [5, 2, 4, 3], which has an accuracy of 95.0%
-```
+## Future Plans
+implementing pattern database heuristic such as fringe or static additive, known to be much faster than misplaced/manhattan
 
 ## Contributing
 
