@@ -32,7 +32,7 @@ implementing pattern database heuristic such as fringe or static additive, known
 
 ## Contributing
 
-1. Fork it (<https://github.com/alexchsieh/Feature-Selection/fork>)
+1. Fork it (<https://github.com/alexchsieh/N-Puzzle/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
 4. Push to the branch (`git push origin feature/fooBar`)
